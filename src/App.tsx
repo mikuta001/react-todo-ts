@@ -66,10 +66,7 @@ function App() {
 
   const changeEditMode = (todo: Todo) => {
     setEditModeIds((prevIds) => {
-      return [
-        ...prevIds,
-        todo.id
-      ]
+      return prevIds.includes(todo.id) ? prevIds : [...prevIds, todo.id]
     })
     setEditedValues((prevValues) => {
       return {
