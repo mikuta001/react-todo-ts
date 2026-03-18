@@ -2,11 +2,7 @@ import { useState } from 'react'
 import AddTodo from './components/AddTodo'
 import TodoItem from './components/TodoItem'
 import './App.css'
-
-type Todo = {
-  id: number,
-  title: string,
-}
+import type { Todo } from './types/Todo'
 
 const initList: Array<Todo> = [
   {
