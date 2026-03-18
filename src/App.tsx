@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import AddTodo from './components/AddTodo'
+import TodoItem from './components/TodoItem'
 import './App.css'
 
 type Todo = {
@@ -31,31 +33,42 @@ function App() {
 
   // todo追加
   const addTodo = (): void => {
-    setTodoList((prevList) => {
-      return [
-        ...prevList,
-        {
-          id: Date.now(),
-          title: addTodoInputValue
-        }
-      ]
-    })
-    setAddTodoInputValue('')
+    const trimAddTodoInputValue = addTodoInputValue.trim();
+
+    if (!trimAddTodoInputValue) {
+      return
+    } else {
+      setTodoList((prevList) => {
+        return [
+          ...prevList,
+          {
+            id: Date.now(),
+            title: trimAddTodoInputValue
+          }
+        ]
+      })
+      setAddTodoInputValue('')
+    }
   }
 
   //Todo編集
   const todoUpdate = (id: number) => {
-    setTodoList((prevList) => {
-      const editedTodoLists = prevList.map((todo) => {
-        return todo.id === id ? { ...todo, title: editedValues[id] } : todo
+    const trimEditedValue = editedValues[id].trim()
+    if (!trimEditedValue) {
+      return
+    } else {
+      setTodoList((prevList) => {
+        const editedTodoLists = prevList.map((todo) => {
+          return todo.id === id ? { ...todo, title: trimEditedValue } : todo
+        })
+        return editedTodoLists
       })
-      return editedTodoLists
-    })
-    setEditModeIds(
-      (prev) => {
-        return prev.filter((editModeId) => editModeId !== id)
-      }
-    )
+      setEditModeIds(
+        (prev) => {
+          return prev.filter((editModeId) => editModeId !== id)
+        }
+      )
+    }
   }
 
   const deleteTodo = (todo: Todo) => {
@@ -87,16 +100,14 @@ function App() {
     <>
       <header className='header-container'>
         <h1 className='header-title'>react todo <span className='header-text'>@typescript</span></h1>
-        <p>{editModeIds}</p>
       </header>
       <main>
         <section className='addTodo-container'>
-          <h2 className='addTodo-title'>Todoを追加する</h2>
-          <div className='addTodo-inputContainer'>
-            <label htmlFor="todoText">Todoを追加する：</label>
-            <input className='addTodo-input' onChange={changeInputValue} id='todoText' type="text" placeholder='Todoを入力してください' value={addTodoInputValue} />
-            <button onClick={addTodo}>追加</button>
-          </div>
+          <AddTodo
+            changeInputValue={changeInputValue}
+            addTodoInputValue={addTodoInputValue}
+            addTodo={addTodo}
+          />
         </section>
         <section className='todoList-container'>
           <h2 className='todoList-title'>Todo lists</h2>
@@ -105,19 +116,15 @@ function App() {
               todoLists.map((todo: Todo) => {
                 const isEditing = editModeIds.includes(todo.id)
                 return (
-                  <li key={todo.id} className='todoList-listItem'>
-                    {isEditing ?
-                      <>
-                        <input type="text" value={editedValues[todo.id]} onChange={(e) => handleEditedTitleInput(todo.id, e)} />
-                        <button onClick={() => todoUpdate(todo.id)}>更新</button>
-                      </>
-                      :
-                      <>
-                        <p>{todo.title}</p>
-                        <button onClick={() => changeEditMode(todo)}>編集</button>
-                        <button onClick={() => deleteTodo(todo)}>削除</button>
-                      </>}
-                  </li>
+                  <TodoItem 
+                    todo={todo}
+                    isEditing={isEditing}
+                    editedValues={editedValues}
+                    handleEditedTitleInput={handleEditedTitleInput}
+                    todoUpdate={todoUpdate}
+                    changeEditMode={changeEditMode}
+                    deleteTodo={deleteTodo}
+                  />
                 )
               })
             }
