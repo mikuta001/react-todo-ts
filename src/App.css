@@ -79,3 +79,68 @@ ul{
   box-shadow: 0px 2px 8px 0px gray;
   border-radius: 8px;
 }
+
+
+/* 追加箇所 */
+.todoList-itemContainer {
+  display: flex;
+}
+
+
+.todoList-listItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.todoItem-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.todoItem-title {
+  font-size: 16px;
+}
+
+.todoItem-title.done {
+  text-decoration: line-through;
+  opacity: 0.55;
+}
+
+.todoItem-statusBadge {
+  min-width: 64px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.todoItem-statusBadge--notStarted {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.todoItem-statusBadge--inProgress {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.todoItem-statusBadge--done {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.todoItem-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.todoItem-statusSelect,
+.todoItem-editInput {
+  padding: 4px 8px;
+}
